@@ -1,0 +1,17 @@
+html
+    head
+        title Node Profile
+    body
+        h1 Profile Page
+        a(href="/logout") Logout
+        br
+        strong ID:
+        #{user.id}
+        br
+        strong Email:
+        #{user.local.email}
+        br
+        strong Pass hash:
+        #{user.local.password}
+        br
+        a(href="/unlink") Unlink

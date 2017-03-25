@@ -1,0 +1,10 @@
+html
+    head
+        title Node Auth Login
+    body
+        h1 Login
+        p(style="color:red;")=message
+        form(action="/login" method="POST")
+            input(type="text" name="email")
+            input(type="password" name="password")
+            input(type="submit")
