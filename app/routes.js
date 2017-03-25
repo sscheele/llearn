@@ -1,3 +1,4 @@
+var User = require('./models/user');
 module.exports = function (app, passport) {
 
     // normal routes ===============================================================
@@ -56,6 +57,16 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/users/:username', function(req, res){
+        var uname = req.params.username;
+        User.find({"profile.screenName" : uname}, function(err, usr){
+            if (err) {
+                res.send(404);
+                return;
+            }
+            res.render('profile', {profile: usr.profile});
+        });
+    });
 
 };
 

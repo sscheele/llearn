@@ -6,8 +6,20 @@ var bcrypt   = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
     local            : {
         email        : String,
-        password     : String
+        password     : String,
     },
+    profile : {
+        screenName : String,
+        reputation : Number,
+        classes : [Object],
+        contributions : [Object],
+        requests : [Object],
+        friends : [String],
+    },
+    chat : {
+        chats : [Object], //each object in chats contains an element saying who the chat is with and an array of message objects
+        //each message object contains a time and some text
+    }
 });
 
 // generating a hash
