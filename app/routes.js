@@ -90,9 +90,16 @@ module.exports = function (app, passport) {
     // CLASSES STUFF
     app.get('/classes', function(req, res){
         Module.find({}).limit(20).exec(function(err, docs){
-            console.log(docs);
             res.render('classes', {classes: docs});
         });
+    });
+
+    app.get('/classes/:classid', function(req, res){
+        res.redirect('/classes/' + req.params.classid + '/0');
+    })
+
+    app.get('/classes/:classid/:page', function(req, res){
+
     });
 };
 

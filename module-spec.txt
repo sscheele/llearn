@@ -1,0 +1,22 @@
+MODULE SPEC
+	All modules are composed of pages. All pages have layouts and resources.
+	Total unpacked size for a package should not exceed 1 MB
+
+RESOURCES
+	CONTENT TYPE: Resources may be images or audio.
+	LOCATION: On the server, resources may be found at /public/classes/{class.__id}/{page number}/res. Upload packages should be similarly structured, with the base directories being page numbers and each containing a res/ folder, regardless of whether that folder is used on that page.
+
+LAYOUTS
+	SYNTAX: Layout syntax should be primarily HTML-like. To ensure security, no form, script, link, or a tags should be allowed. Additionally, the script should eventually be configured so that the page doesn't load any outside resources. 
+	TYPES: Layout tags will all be evaluated by Angular on the client-side, and therefore they'll all be attribute directives. However, they can roughly be divided into imperative and declarative tags.
+	IMPERATIVE TAGS:
+		<play-on-click file="word.mp3">Content</play-on-click> - Play "/public/classes/{class.__id}/{page number}/res/word.mp3" whenever "Content" is clicked.
+	DECLARATIVE TAGS:
+		<quiz-select>
+			<quiz-option index="-1">Answer one</quiz-option-wrong>
+			<quiz-option index="0">Answer two</quiz-option-right>
+			<quiz-option index="0">Answer three</quiz-option-right>
+		</quiz-select> - An index of -1 indicates that an answer is wrong. Answers two and three may be selected in any order. A 'Check' button will automatically be added after each quiz.
+		<quiz-text answer="ans" check-case="false">Prompt</quiz-text> - A text box will be displayed with a label and a check button. The correct answer will be stored inside the tag (in this case, it's "ans"), and the check-case attribute will tell the engine whether to compare case.
+
+
