@@ -8,11 +8,11 @@ module.exports = function (app, passport) {
         res.render('index');
     });
 
-    // PROFILE SECTION =========================
-    app.get('/profile', isLoggedIn, function (req, res) {
-        res.render('profile', {
-            user: req.user
-        });
+    app.get('/profile', isLoggedIn, function(req, res){
+        res.render('profile')
+    });
+    app.get('/profile/json', isLoggedIn, function (req, res) {
+        res.json({email: req.user.local.email, profile: req.user.profile});
     });
 
     // LOGOUT ==============================

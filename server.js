@@ -1,17 +1,18 @@
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
+var express = require('express');
+var app = express();
+var port = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
-var flash    = require('connect-flash');
+var flash = require('connect-flash');
+var path = require('path');
 
-var morgan       = require('morgan');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 var MongoStore = require('connect-mongodb-session')(session);
 
-var dbPath = 'mongodb://localhost:27017/passport';
+var dbPath = 'mongodb://localhost:27017/llsrv';
 mongoose.connect(dbPath); // connect to our database
 var store = new MongoStore({
   uri: dbPath,
@@ -25,15 +26,16 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'pug'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-    secret: 'vnufiwnvnhhiehyfvuselivbluesalqsmdpsqll', // session secret
-    store: store,
-    resave: true,
-    saveUninitialized: true
+  secret: 'vnufiwnvnhhiehyfvuselivbluesalqsmdpsqll', // session secret
+  store: store,
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions

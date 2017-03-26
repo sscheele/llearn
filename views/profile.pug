@@ -1,17 +1,9 @@
-html
+html(ng-app="profile")
     head
-        title Node Profile
+        title Profile
+        link(rel="stylesheet" href="/public/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
     body
-        h1 Profile Page
-        a(href="/logout") Logout
-        br
-        strong ID:
-        #{user.id}
-        br
-        strong Email:
-        #{user.local.email}
-        br
-        strong Pass hash:
-        #{user.local.password}
-        br
-        a(href="/unlink") Unlink
+        include header.html
+        include profile-index.html
+        include footer.html

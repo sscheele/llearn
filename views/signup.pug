@@ -5,6 +5,7 @@ html
         h1 Signup
         p(style="color:red;")=message
         form(action="/signup" method="POST")
-            input(type="text" name="email")
+            input(type="text" name="email" placeholder="example@example.com")
+            input(type="text" name="screenName" placeholder="Screen name")
             input(type="password" name="password")
             input(type="submit")

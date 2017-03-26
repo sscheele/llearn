@@ -1,0 +1,13 @@
+<script src="/public/angular.min.js"></script>
+<script src="/public/profile/app.js"></script>
+<h1 class="jumbotron">Profile Page</h1>
+<div ng-controller="MainCtrl">
+    <br>
+    <strong>Email: </strong> {{email}}
+    <br>
+    <strong>Screen name: </strong> {{profile.screenName}}
+    <br>
+    <strong>Reputation: </strong> {{profile.reputation}}
+    <br>
+</div>
+<span style="color:red;">Delete account (warning: this action cannot be undone): </span><a href="/unlink">Delete</a>
