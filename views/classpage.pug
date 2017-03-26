@@ -1,0 +1,17 @@
+html
+    head
+        title= classname
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
+    body
+        script.
+            var classIDStr = #{classid};
+        script.
+            var pageNum = #{page};
+        script(src='/public/js/angular.min.js')
+        script(src='/public/js/class/app.js')
+        include header.html
+        div(class="container-fluid")
+            div(class="col-sm-12 col-lg-6 col-lg-offset-3")
+                include class-page-fragment.html
+        include footer.html

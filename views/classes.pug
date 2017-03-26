@@ -1,7 +1,7 @@
 html
     head
         title Classes - LLearn
-        link(rel="stylesheet" href="/public/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
         link(rel="stylesheet" href="/public/stylesheets/univ.css")
         link(rel="stylesheet" href="/public/stylesheets/classes.css")
     body
@@ -15,5 +15,6 @@ html
                         h3= classobj.name
                         p= classobj.description
                     div(class="col-sm-1")
-                        button(class="btn btn-success") Take
+                        a(href="/classes/" + classobj._id)
+                            button(class="btn btn-success") Take
         include footer.html

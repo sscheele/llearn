@@ -99,7 +99,10 @@ module.exports = function (app, passport) {
     })
 
     app.get('/classes/:classid/:page', function(req, res){
-
+        Module.findById(req.params.classid, function(err, doc){
+            if (err) console.log(err);
+            res.render('classpage', {classname: doc.name, classid: req.params.classid, page: req.params.page});
+        });
     });
 };
 
