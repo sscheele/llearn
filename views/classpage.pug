@@ -12,16 +12,25 @@ html
             var pageNum = "#{page}";
         script(src='/public/js/angular.min.js')
         script(src='/public/js/class/app.js')
+        script(src='/public/js/class/rate.js')
         include header.html
         div(class="container-fluid")
             div(class="col-sm-1 col-lg-3")
                 if(page > 0)
-                    a(href="/classes/#{classid}/#{page - 1}")
+                    a(href="/classes/" + classid + "/" + page - 1)
                         span(class="fa fa-arrow-left")
             div(class="col-sm-10 col-lg-6")
                 include class-page-fragment.html
             div(class="col-sm-1 col-lg-3")
                 if(page < classpages)
-                    a(href="/classes/#{classid}/#{page + 1}")
+                    a(href="/classes/" + classid + "/" + page + 1)
                         span(class="fa fa-arrow-right")
+        div(class="container-fluid")
+            if comments
+                each comment in comments
+                    div(class="row")
+                        #{comment.text}
+        form(action="/classes/" + classid + "/comment" method="POST")
+            input(type="text" name="comment")
+            input(type="submit")
         include footer.html

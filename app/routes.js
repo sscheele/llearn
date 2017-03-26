@@ -1,5 +1,6 @@
 var User = require('./models/user');
 var Module = require('./models/module');
+var Chat = require('./models/chat');
 var AdmZip = require('adm-zip');
 var path = require('path');
 var multer = require('multer')
@@ -36,14 +37,14 @@ module.exports = function (app, passport) {
         });
     })
 
-    app.post('/profile/know/add', function (req, res) {
+    app.post('/profile/know/add', isLoggedIn, function (req, res) {
         req.user.profile.knownLanguages.push(req.body.lang);
         req.user.save(function (error) {
             if (error) console.log(error);
         });
     });
 
-    app.post('/profile/learn/add', function (req, res) {
+    app.post('/profile/learn/add', isLoggedIn, function (req, res) {
         req.user.profile.learningLanguages.push(req.body.lang);
         req.user.save(function (error) {
             if (error) console.log(error);
@@ -98,7 +99,7 @@ module.exports = function (app, passport) {
         res.render('addclass.pug');
     });
 
-    app.post('/classes/add', upload.single('classUpload'), function (req, res, next) {
+    app.post('/classes/add', isLoggedIn, upload.single('classUpload'), function (req, res, next) {
         console.log("recvd");
         var newPath = req.file.path + ".zip";
         fs.rename(req.file.path, newPath, function (err) {
@@ -113,7 +114,7 @@ module.exports = function (app, passport) {
         fs.readFile(manifestName, function (err, data) {
             var tmpObj = JSON.parse(data);
 
-            var draftMod = { name: tmpObj.name, description: tmpObj.description, author: tmpObj.author, pages: tmpObj.pages };
+            var draftMod = { name: tmpObj.name, description: tmpObj.description, author: tmpObj.author, pages: tmpObj.pages, rating: 2.0, comments: [] };
             Module.create(draftMod, function (err, dm) {
                 if (err) console.log(err);
                 console.log(JSON.stringify(dm));
@@ -143,10 +144,61 @@ module.exports = function (app, passport) {
         res.redirect('/classes/' + req.params.classid + '/0');
     })
 
+    app.post('/classes/:classid/rate', isLoggedIn, function (req, res) {
+        var newRate = parseInt(req.body.rating);
+        Module.findById(req.params.classid, function (err, doc) {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            doc.rating = newRate;
+            Module.findOneAndUpdate({ _id: req.params.classid }, doc, function (err, doc) {
+                if (err) console.log(err);
+            });
+        });
+    })
+
+    app.post('/classes/:classid/comment', isLoggedIn, function (req, res) {
+        Module.findById(req.params.classid, function (err, doc) {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            doc.comments.push({ user: req.user.profile.screenName, text: req.body.comment });
+            Module.findOneAndUpdate({ _id: req.params.classid }, doc, function (err, doc) {
+                if (err) console.log(err);
+            });
+        });
+    });
+
     app.get('/classes/:classid/:page', function (req, res) {
         Module.findById(req.params.classid, function (err, doc) {
             if (err) console.log(err);
-            res.render('classpage', { classname: doc.name, classid: req.params.classid, page: req.params.page, classpages: doc.pages });
+            res.render('classpage', { classname: doc.name, classid: req.params.classid, page: req.params.page, classpages: doc.pages, comments: doc.comments });
+        });
+    });
+
+    //CHAT STUFF
+    app.get('/chat', isLoggedIn, function (req, res) {
+        res.render('highchat', { chats: req.user.chats });
+    });
+    app.get('/chat/json', isLoggedIn, function (req, res) {
+        res.json(req.user)
+        res.json(User.findById(req.user._id).chats)
+    });
+    app.get('/chat/:sname', function (req, res) {
+        User.findOne({ 'profile.screenname': req.params.sname }, function (err, doc) {
+            if (err) console.log(err);
+            res.render('lowchat', { with: doc.profile })
+        });
+    });
+    app.get('/msg', function (req, res) {
+        //Find
+        Chat.find({
+            'room': req.query.room.toLowerCase()
+        }).exec(function (err, msgs) {
+            //Send
+            res.json(msgs);
         });
     });
 };

@@ -6,7 +6,10 @@ var moduleSchema = mongoose.Schema({
     rating: Number,
     author: String,
     updated: String,
-    comments: [Object],
+    comments: [{
+        user: String,
+        text: String
+    }],
     pages: Number
 });
 

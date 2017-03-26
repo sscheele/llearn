@@ -92,6 +92,7 @@ module.exports = function (passport) {
                             newUser.local.password = newUser.generateHash(password);
                             newUser.profile.screenName = req.body.screenName;
                             newUser.profile.reputation = 0;
+                            newUser.chats = [];
 
                             newUser.save(function (err) {
                                 if (err)

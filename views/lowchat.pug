@@ -1,0 +1,13 @@
+html
+    head
+        title Chat - LLearn
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
+        lint(rel="stylesheet" href="/public/stylesheets/chats.css")
+    body
+        script(src="/public/js/angular.min.js")
+        script(src="/public/js/chat/app.js")
+        script(src="/public/js/socket.io.js")
+        include header.html
+        div(class="container")
+            include lowchat-index.html

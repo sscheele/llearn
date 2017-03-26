@@ -1,1 +1,15 @@
-include index.html
+html
+    head
+        title Home - LLearn
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
+    body
+        include header.html
+        div(class="container")
+            h1 Welcome to LLearn!
+            h3 You can
+                a(href="/login") log in
+            h3 Or
+                a(href="/signup") sign up
+            h4 Or you can go right ahead and start taking classes!
+        include footer.html

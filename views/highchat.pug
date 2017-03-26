@@ -1,0 +1,18 @@
+html
+    head
+        title Chat - LLearn
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
+        lint(rel="stylesheet" href="/public/stylesheets/chats.css")
+    body
+        include header.html
+        div(class="container")
+            h3 Chats
+            if chats
+                each chat in chats
+                    div(class="row chat-row")
+                        h4= chat.with
+                        p= chat.messages[chat.messages.length - 1].text
+            else
+                h4(style="color:gray;") It looks like you don't have any chats at the moment.
+        include footer.html

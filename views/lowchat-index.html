@@ -1,0 +1,26 @@
+<div ng-app="chatApp">
+    <div ng-controller="MainCtrl">
+        <md-content>
+            <section>
+                <md-list>
+                    <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
+                        <md-list-item class="md-3-line">
+                            <img ng-src="img/user.png" class="md-avatar" alt="User" />
+                            <div class="md-list-item-text">
+                                <h3>{{ m.username }}</h3>
+                                <p>{{m.content}}</p>
+                            </div>
+                        </md-list-item>
+                    </md-whiteframe>
+
+                </md-list>
+            </section>
+            <div class="footer">
+                <md-input-container>
+                    <label>Message</label>
+                    <textarea ng-model="message" columns="1" md-maxlength="100" ng-enter="send(message)"></textarea>
+                </md-input-container>
+            </div>
+        </md-content>
+    </div>
+</div>
