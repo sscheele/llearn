@@ -1,5 +1,10 @@
 var User = require('./models/user');
-var Module = require('./models/module')
+var Module = require('./models/module');
+var AdmZip = require('adm-zip');
+var path = require('path');
+var multer = require('multer')
+var upload = multer({ dest: path.join(__dirname, 'uploads') })
+var fs = require('fs');
 module.exports = function (app, passport) {
     // show the home page
     app.get('/', function (req, res) {
@@ -87,21 +92,61 @@ module.exports = function (app, passport) {
         });
     });
 
-    // CLASSES STUFF
-    app.get('/classes', function(req, res){
-        Module.find({}).limit(20).exec(function(err, docs){
-            res.render('classes', {classes: docs});
+
+    //CLASS UPLOAD
+    app.get('/contribute', function (req, res) {
+        res.render('addclass.pug');
+    });
+
+    app.post('/classes/add', upload.single('classUpload'), function (req, res, next) {
+        console.log("recvd");
+        var newPath = req.file.path + ".zip";
+        fs.rename(req.file.path, newPath, function (err) {
+            if (err) console.log(err);
+        });
+        var randFldr = path.join(__dirname, 'uploads', Math.random().toString(36).substring(7));
+        var zip = new AdmZip(newPath);
+
+        zip.extractAllTo(randFldr, true);
+        var manifestName = path.join(randFldr, 'manifest.json');
+        var id = "";
+        fs.readFile(manifestName, function (err, data) {
+            var tmpObj = JSON.parse(data);
+
+            var draftMod = { name: tmpObj.name, description: tmpObj.description, author: tmpObj.author, pages: tmpObj.pages };
+            Module.create(draftMod, function (err, dm) {
+                if (err) console.log(err);
+                console.log(JSON.stringify(dm));
+                id = dm._id.toString();
+                console.log("id: " + id);
+
+                fs.rename(randFldr, path.join(__dirname, "../public/classes", id), function (err) {
+                    if (err) console.log(err);
+                });
+                res.redirect('/classes/' + id);
+            });/*
+            var newDoc = Module.findOne(draftMod, function (err, doc) {
+                if (err) console.log(err);
+                id = doc._id;
+            })*/
         });
     });
 
-    app.get('/classes/:classid', function(req, res){
+    // CLASSES STUFF
+    app.get('/classes', function (req, res) {
+        Module.find({}).limit(20).exec(function (err, docs) {
+            res.render('classes', { classes: docs });
+        });
+    });
+
+    app.get('/classes/:classid', function (req, res) {
         res.redirect('/classes/' + req.params.classid + '/0');
     })
 
-    app.get('/classes/:classid/:page', function(req, res){
-        Module.findById(req.params.classid, function(err, doc){
+    app.get('/classes/:classid/:page', function (req, res) {
+        Module.findById(req.params.classid, function (err, doc) {
             if (err) console.log(err);
-            res.render('classpage', {classname: doc.name, classid: req.params.classid, page: req.params.page, classpages: doc.pages});
+            res.render('classpage', { classname: doc.name, classid: req.params.classid, page: req.params.page, classpages: doc.pages });
         });
     });
 };

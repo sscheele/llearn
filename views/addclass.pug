@@ -1,0 +1,11 @@
+html
+    head
+        title Contribute a class!
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
+        link(rel="stylesheet" href="/public/stylesheets/univ.css")
+    body
+        include header.html
+        form(action="/classes/add", method="POST" enctype="multipart/form-data")
+            input(type="file" name="classUpload")
+            input(type="submit")
+        include footer.html
