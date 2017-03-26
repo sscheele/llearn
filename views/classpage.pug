@@ -3,11 +3,12 @@ html
         title= classname
         link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
         link(rel="stylesheet" href="/public/stylesheets/univ.css")
+        link(rel="stylesheet" href="/public/stylesheets/classpage.css")
     body
         script.
-            var classIDStr = #{classid};
+            var classIDStr = "#{classid}";
         script.
-            var pageNum = #{page};
+            var pageNum = "#{page}";
         script(src='/public/js/angular.min.js')
         script(src='/public/js/class/app.js')
         include header.html
