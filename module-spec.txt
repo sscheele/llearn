@@ -12,11 +12,9 @@ LAYOUTS
 		IMPERATIVE TAGS:
 			<play-on-click data-file="word.mp3">Content</play-on-click> - Play "/public/classes/{class.__id}/{page number}/res/word.mp3" whenever "Content" is clicked.
 		DECLARATIVE TAGS:
-			<quiz-select>
-				<quiz-option data-index="-1">Answer one</quiz-option-wrong>
-				<quiz-option data-index="0">Answer two</quiz-option-right>
-				<quiz-option data-index="0">Answer three</quiz-option-right>
-			</quiz-select> - An index of -1 indicates that an answer is wrong. Answers two and three may be selected in any order. A 'Check' button will automatically be added after each quiz.
+			<quiz-select data-template="quiz.html"></quiz-select> - Get a multiple-choice quiz from .../res/quiz.html
+			<quiz-answer data-answer="one|two"></quiz-answer> - Defines one answer for the quiz. If more than one answer is possible, they should be separated by bars.
+			<quiz-option>Answer two</quiz-option> - Defines an 
 			<quiz-text data-answer="ans" data-check-case="false">Prompt</quiz-text> - A text box will be displayed with a label and a check button. The correct answer will be stored inside the tag (in this case, it's "ans"), and the check-case attribute will tell the engine whether to compare case.
 			<local-img data-src="pic1.png"></local-img> - Will automatically route to correct image. The <img> tag shouldn't be allowed.
 	LOCATION: Layouts should be located in the base directory of each page, with the name layout.html

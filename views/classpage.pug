@@ -4,6 +4,7 @@ html
         link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css")
         link(rel="stylesheet" href="/public/stylesheets/univ.css")
         link(rel="stylesheet" href="/public/stylesheets/classpage.css")
+        link(rel="stylesheet" href="/public/stylesheets/font-awesome.min.css")
     body
         script.
             var classIDStr = "#{classid}";
@@ -13,6 +14,14 @@ html
         script(src='/public/js/class/app.js')
         include header.html
         div(class="container-fluid")
-            div(class="col-sm-12 col-lg-6 col-lg-offset-3")
+            div(class="col-sm-1 col-lg-3")
+                if(page > 0)
+                    a(href="/classes/#{classid}/#{page - 1}")
+                        span(class="fa fa-arrow-left")
+            div(class="col-sm-10 col-lg-6")
                 include class-page-fragment.html
+            div(class="col-sm-1 col-lg-3")
+                if(page < classpages)
+                    a(href="/classes/#{classid}/#{page + 1}")
+                        span(class="fa fa-arrow-right")
         include footer.html
