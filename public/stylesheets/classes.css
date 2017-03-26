@@ -1,0 +1,6 @@
+.class-row:nth-child(odd){
+    background-color: #999;
+}
+.class-row button {
+    margin-top: 2vh;
+}

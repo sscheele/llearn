@@ -15,10 +15,12 @@ var userSchema = mongoose.Schema({
         contributions : [Object],
         requests : [Object],
         friends : [String],
+        knownLanguages : [String],
+        learningLanguages : [String],
     },
     chat : {
         chats : [Object], //each object in chats contains an element saying who the chat is with and an array of message objects
-        //each message object contains a time and some text
+        //each message object contains a time, which user it's from, and some text
     }
 });
 

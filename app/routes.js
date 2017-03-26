@@ -1,18 +1,48 @@
 var User = require('./models/user');
+var Module = require('./models/module')
 module.exports = function (app, passport) {
-
-    // normal routes ===============================================================
-
-    // show the home page (will also have our login links)
+    // show the home page
     app.get('/', function (req, res) {
         res.render('index');
     });
 
-    app.get('/profile', isLoggedIn, function(req, res){
+    //PROFILE STUFF (YOURS AND SOMEONE ELSE'S)
+    app.get('/profile', isLoggedIn, function (req, res) {
         res.render('profile')
     });
+
     app.get('/profile/json', isLoggedIn, function (req, res) {
-        res.json({email: req.user.local.email, profile: req.user.profile});
+        res.json({ email: req.user.local.email, profile: req.user.profile });
+    });
+
+    app.get('/users*', function (req, res) {
+        res.render('info');
+    });
+
+    app.get('/info/json/:username', function (req, res) {
+        var uname = req.params.username;
+        User.findOne({ "profile.screenName": uname }, function (err, usr) {
+            if (err) {
+                res.send(404);
+                return;
+            }
+            console.log(usr.profile)
+            res.json({ profile: usr.profile });
+        });
+    })
+
+    app.post('/profile/know/add', function (req, res) {
+        req.user.profile.knownLanguages.push(req.body.lang);
+        req.user.save(function (error) {
+            if (error) console.log(error);
+        });
+    });
+
+    app.post('/profile/learn/add', function (req, res) {
+        req.user.profile.learningLanguages.push(req.body.lang);
+        req.user.save(function (error) {
+            if (error) console.log(error);
+        });
     });
 
     // LOGOUT ==============================
@@ -35,7 +65,7 @@ module.exports = function (app, passport) {
         failureFlash: true // allow flash messages
     }));
 
-    // SIGNUP =================================
+    // SIGNUP  AND UNLINK =================================
     // show the signup form
     app.get('/signup', function (req, res) {
         res.render('signup', { message: req.flash('signupMessage') });
@@ -57,17 +87,13 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/users/:username', function(req, res){
-        var uname = req.params.username;
-        User.find({"profile.screenName" : uname}, function(err, usr){
-            if (err) {
-                res.send(404);
-                return;
-            }
-            res.render('profile', {profile: usr.profile});
+    // CLASSES STUFF
+    app.get('/classes', function(req, res){
+        Module.find({}).limit(20).exec(function(err, docs){
+            console.log(docs);
+            res.render('classes', {classes: docs});
         });
     });
-
 };
 
 // route middleware to ensure user is logged in

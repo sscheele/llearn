@@ -83,7 +83,7 @@ module.exports = function (passport) {
                             return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                         } else {
                             if (!req.body.screenName) {
-                                return done(null, false, req.flash('signupMessage', 'Specify a screen name'))
+                                return done(null, false, req.flash('signupMessage', 'Specify a screen name'));
                             }
                             // create the user
                             var newUser = new User();

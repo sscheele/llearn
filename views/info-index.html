@@ -1,0 +1,12 @@
+<script src="/public/angular.min.js"></script>
+<script src="/public/info/app.js"></script>
+<div ng-controller="MainCtrl">
+    <h1 class="jumbotron">Profile Page: {{profile.screenName}}</h1>
+    <strong>Screen name: </strong> {{profile.screenName}}
+    <br>
+    <strong>Reputation: </strong> {{profile.reputation}}
+    <br>
+    <strong>Fluent in: </strong> {{profile.knownLanguages.join(', ')}}
+    <br>
+    <strong>Learning: </strong> {{profile.learningLanguages.join(', ')}}
+</div>
