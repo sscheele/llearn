@@ -5,18 +5,30 @@ var bcrypt = require('bcrypt-nodejs');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
     local: {
-        email: String,
-        password: String,
+        password: {
+            required: true,
+            type: String
+        }
     },
     profile: {
-        screenName: String,
-        reputation: Number,
-        classes: [Object],
-        contributions: [Object],
+        email: {
+            required: true,
+            type: String
+        },
+        screenName: {
+            required: true,
+            type: String
+        },
+        reputation: {
+            type: Number,
+            default: 0
+        },
+        classes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Module'}],
+        contributions: [{type: mongoose.Schema.Types.ObjectId, ref: 'Module'}],
         requests: [Object],
-        friends: [String],
-        knownLanguages: [String],
-        learningLanguages: [String],
+        friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+        knownLanguages: [{type: mongoose.Schema.Types.ObjectId, ref: 'Language'}],
+        learningLanguages: [{type: mongoose.Schema.Types.ObjectId, ref: 'Language'}]
     }
 });
 

@@ -100,37 +100,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/classes/add', isLoggedIn, upload.single('classUpload'), function (req, res, next) {
-        console.log("recvd");
-        var newPath = req.file.path + ".zip";
-        fs.rename(req.file.path, newPath, function (err) {
-            if (err) console.log(err);
-        });
-        var randFldr = path.join(__dirname, 'uploads', Math.random().toString(36).substring(7));
-        var zip = new AdmZip(newPath);
-
-        zip.extractAllTo(randFldr, true);
-        var manifestName = path.join(randFldr, 'manifest.json');
-        var id = "";
-        fs.readFile(manifestName, function (err, data) {
-            var tmpObj = JSON.parse(data);
-
-            var draftMod = { name: tmpObj.name, description: tmpObj.description, author: tmpObj.author, pages: tmpObj.pages, rating: 2.0, comments: [] };
-            Module.create(draftMod, function (err, dm) {
-                if (err) console.log(err);
-                console.log(JSON.stringify(dm));
-                id = dm._id.toString();
-                console.log("id: " + id);
-
-                fs.rename(randFldr, path.join(__dirname, "../public/classes", id), function (err) {
-                    if (err) console.log(err);
-                });
-                res.redirect('/classes/' + id);
-            });/*
-            var newDoc = Module.findOne(draftMod, function (err, doc) {
-                if (err) console.log(err);
-                id = doc._id;
-            })*/
-        });
+    
     });
 
     // CLASSES STUFF
@@ -165,10 +135,9 @@ module.exports = function (app, passport) {
                 return;
             }
             doc.comments.push({ user: req.user.profile.screenName, text: req.body.comment });
-            Module.findOneAndUpdate({ _id: req.params.classid }, doc, function (err, doc) {
-                if (err) console.log(err);
-            });
+            doc.save();
         });
+        res.redirect("/classes/" + req.params.classid);
     });
 
     app.get('/classes/:classid/:page', function (req, res) {
