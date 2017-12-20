@@ -5,6 +5,7 @@ var moduleSchema = mongoose.Schema({
     description: String,
     rating: Number,
     author: String,
+    published: Boolean,
     updated: String,
     comments: [{
         user: String,
