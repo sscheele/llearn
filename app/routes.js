@@ -6,7 +6,7 @@ var path = require('path');
 var multer = require('multer')
 var upload = multer({ dest: path.join(__dirname, 'uploads') })
 var fs = require('fs');
-module.exports = function (app, passport) {
+module.exports = function (app) {
     // show the home page
     app.get('/', function (req, res) {
         res.render('index');
@@ -65,11 +65,7 @@ module.exports = function (app, passport) {
     });
 
     // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/profile', // redirect to the secure profile section
-        failureRedirect: '/login', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
+    app.post('/login', );
 
     // SIGNUP  AND UNLINK =================================
     // show the signup form
@@ -78,11 +74,7 @@ module.exports = function (app, passport) {
     });
 
     // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/profile', // redirect to the secure profile section
-        failureRedirect: '/signup', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
+    app.post('/signup', );
 
     app.get('/unlink', isLoggedIn, function (req, res) {
         var user = req.user;
@@ -138,13 +130,6 @@ module.exports = function (app, passport) {
             doc.save();
         });
         res.redirect("/classes/" + req.params.classid);
-    });
-
-    app.get('/classes/:classid/:page', function (req, res) {
-        Module.findById(req.params.classid, function (err, doc) {
-            if (err) console.log(err);
-            res.render('classpage', { classname: doc.name, classid: req.params.classid, page: req.params.page, classpages: doc.pages, comments: doc.comments });
-        });
     });
 
     //CHAT STUFF
